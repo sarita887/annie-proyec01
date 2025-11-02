@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mini Prueba para Annie ✨</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #0f1724;
+      --card: linear-gradient(135deg,#1f2937 0%, #111827 100%);
+      --accent: #ff7aa2;
+      --accent-2: #7ad2ff;
+      --glass: rgba(255,255,255,0.04);
+      --muted: #94a3b8;
+      --white: #f8fafc;
+    }
+    *{box-sizing:border-box;}
+    html,body{height:100%;margin:0;padding:0;font-family:'Poppins',sans-serif;background:var(--bg);color:var(--white);overflow:hidden;}
+
+    /* 🌟 Fondo estrellado animado */
+    .stars{
+      position:fixed;
+      top:0;left:0;width:100%;height:100%;
+      background: radial-gradient(circle at bottom, #0a0033 0%, #000 100%);
+      overflow:hidden;
+      z-index:0;
+    }
+    .stars::after{
+      content:'';
+      position:absolute;top:0;left:0;width:100%;height:100%;
+      background:url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
+      animation: twinkle 3s infinite;
+      opacity:0.8;
+    }
+    @keyframes twinkle {
+      0%,100%{opacity:0.8;}
+      50%{opacity:1;}
+    }
+
+    body{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:10px;
+      position:relative;
+    }
+
+    .card{
+      width:100%;
+      max-width:400px;
+      background:var(--card);
+      border-radius:20px;
+      padding:20px;
+      box-shadow:0 10px 20px rgba(0,0,0,0.5);
+      text-align:center;
+      position:relative;
+      z-index:1;
+      backdrop-filter: blur(6px);
+    }
+
+    h1{font-size:20px;margin-bottom:8px;}
+    p{font-size:14px;color:var(--muted);margin:0 0 16px;}
+
+    .question{margin:16px 0;padding:10px;border-radius:14px;background:var(--glass);border:1px solid rgba(255,255,255,0.05);}
+    .question h2{font-size:16px;margin-bottom:10px;}
+
+    .options{display:flex;flex-direction:column;gap:8px;}
+    .option{background:rgba(255,255,255,0.05);padding:10px;border-radius:10px;cursor:pointer;font-size:14px;}
+    .option.selected{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#081022;font-weight:600;}
+
+    .controls{display:flex;justify-content:space-between;margin-top:16px;}
+    button{
+      flex:1;
+      margin:0 4px;
+      padding:10px;
+      border:none;
+      border-radius:10px;
+      font-weight:600;
+      cursor:pointer;
+    }
+    .btn{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#081022;}
+    .ghost{background:transparent;border:1px solid rgba(255,255,255,0.2);color:var(--white);}
+
+    .progress{height:6px;background:rgba(255,255,255,0.1);border-radius:999px;overflow:hidden;margin-top:10px;}
+    .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:0%;transition:width .4s;}
+
+    .final-card{display:none;flex-direction:column;align-items:center;}
+    .nick-btns{display:flex;gap:10px;margin-top:10px;}
+    .nick-btns button{flex:1;padding:10px;border-radius:10px;font-weight:700;cursor:pointer;border:none;}
+    .nick-yes{background:var(--accent);color:#081022;}
+    .nick-ani{background:var(--accent-2);color:#081022;}
+    #nickReply{margin-top:10px;color:var(--muted);font-size:14px;}
+
+    /* ✨ Chispitas */
+    .sparkle{
+      position:fixed;
+      width:8px;
+      height:8px;
+      background: radial-gradient(circle, white, transparent);
+      border-radius:50%;
+      pointer-events:none;
+      animation:sparkle 1s ease-out forwards;
+      z-index:10;
+    }
+    @keyframes sparkle{
+      0%{opacity:1;transform:scale(1);}
+      100%{opacity:0;transform:scale(2);}
+    }
+
+    /* 🔊 Botón de música */
+    #music-control{
+      position:absolute;
+      top:10px;right:10px;
+      background:rgba(255,255,255,0.1);
+      border:none;
+      color:white;
+      border-radius:50%;
+      width:40px;height:40px;
+      font-size:20px;
+      cursor:pointer;
+      box-shadow:0 0 10px rgba(255,255,255,0.3);
+      z-index:2;
+    }
+
+    @media(max-width:480px){
+      h1{font-size:18px;}
+      .card{padding:16px;}
+      .option{font-size:13px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+
+  <main class="card">
+    <button id="music-control">🔊</button>
+    <h1>Mini prueba para Annie 🌟</h1>
+    <p>Tres preguntitas rápidas para conocerte mejor 💕</p>
+
+    <div id="quiz">
+      <section class="question" data-index="0">
+        <h2>1. ¿Cómo sobrevives a un mal día?</h2>
+        <div class="options">
+          <div class="option">Dormir, resetear y fingir que todo bien 😴</div>
+          <div class="option">Comer como si no hubiera mañana 🍫</div>
+          <div class="option">Escuchar música y pensar que soy protagonista 🎧</div>
+        </div>
+      </section>
+
+      <section class="question" data-index="1" style="display:none;">
+        <h2>2. ¿Qué tipo de amor te atrae más?</h2>
+        <div class="options">
+          <div class="option">El que llega sin avisar</div>
+          <div class="option">El que se siente en silencio</div>
+          <div class="option">El que parece una broma del destino</div>
+        </div>
+      </section>
+
+      <section class="question" data-index="2" style="display:none;">
+        <h2>3. ¿Qué tipo de energía te atrae más?</h2>
+        <div class="options">
+          <div class="option">La tranquila pero profunda 🌙</div>
+          <div class="option">La divertida que te hace olvidar todo 🌈</div>
+          <div class="option">La que se siente familiar sin saber por qué ✨</div>
+        </div>
+      </section>
+
+      <div class="progress"><i></i></div>
+
+      <div class="controls">
+        <button class="ghost" id="prevBtn" disabled>← Atrás</button>
+        <button class="btn" id="nextBtn">Siguiente →</button>
+      </div>
+    </div>
+
+    <div id="final" class="final-card">
+      <h2>la verdad no sabia como decirtelo PERO... 💭</h2>
+      <p>¿Puedo llamarte <strong>Ann</strong> o <strong>Ani</strong>?</p>
+      <div class="nick-btns">
+        <button class="nick-yes" id="btnAnn">Ann</button>
+        <button class="nick-ani" id="btnAni">Ani</button>
+      </div>
+      <p id="nickReply"></p>
+    </div>
+  </main>
+
+<!-- 🎵 Música de fondo automática desde YouTube -->
+<div id="music-container">
+  <iframe
+    id="yt-music"
+    width="0"
+    height="0"
+    src="https://www.youtube.com/embed/Lf566pMNCOw?enablejsapi=1&loop=1&playlist=Lf566pMNCOw&autoplay=1&mute=1"
+    frameborder="0"
+    allow="autoplay">
+  </iframe>
+  <button id="music-toggle">🔇 Apagar música</button>
+</div>
+
+<!-- API de YouTube -->
+<script src="https://www.youtube.com/iframe_api"></script>
+
+<script>
+  let player;
+  let musicPlaying = true;
+  const musicButton = document.getElementById("music-toggle");
+
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player("yt-music", {
+      events: {
+        onReady: (event) => {
+          event.target.setVolume(20); // volumen bajo
+          event.target.unMute(); // activa el sonido
+          event.target.playVideo(); // inicia automáticamente
+        },
+      },
+    });
+  }
+
+  musicButton.addEventListener("click", () => {
+    if (!player) return;
+    if (musicPlaying) {
+      player.pauseVideo();
+      musicButton.textContent = "🔊 Activar música";
+    } else {
+      player.playVideo();
+      musicButton.textContent = "🔇 Apagar música";
+    }
+    musicPlaying = !musicPlaying;
+  });
+</script>
+
+
+  <script>
+    const sections=document.querySelectorAll('.question');
+    const nextBtn=document.getElementById('nextBtn');
+    const prevBtn=document.getElementById('prevBtn');
+    const progressBar=document.querySelector('.progress > i');
+    let idx=0;
+
+    function showIndex(i){
+      sections.forEach((s,k)=>s.style.display=k===i?'block':'none');
+      prevBtn.disabled=i===0;
+      nextBtn.textContent=i===sections.length-1?'Terminar':'Siguiente →';
+      progressBar.style.width=(i/sections.length)*100+'%';
+    }
+
+    document.querySelectorAll('.option').forEach(opt=>{
+      opt.addEventListener('click',()=>{
+        opt.parentElement.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
+        opt.classList.add('selected');
+      });
+    });
+
+    nextBtn.addEventListener('click',()=>{
+      const current=sections[idx];
+      if(!current.querySelector('.selected')){alert('Elige una opción para continuar 😊');return;}
+      if(idx<sections.length-1){idx++;showIndex(idx);}else finish();
+    });
+
+    prevBtn.addEventListener('click',()=>{if(idx>0){idx--;showIndex(idx);}});
+
+    function finish(){
+      document.getElementById('quiz').style.display='none';
+      document.getElementById('final').style.display='flex';
+      progressBar.style.width='100%';
+    }
+
+    // ✨ Chispitas
+    function createSparkles(x, y) {
+      for (let i = 0; i < 15; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.classList.add('sparkle');
+        sparkle.style.left = `${x + Math.random() * 20 - 10}px`;
+        sparkle.style.top = `${y + Math.random() * 20 - 10}px`;
+        sparkle.style.background = `hsl(${Math.random() * 360}, 100%, 70%)`;
+        document.body.appendChild(sparkle);
+        setTimeout(() => sparkle.remove(), 1000);
+      }
+    }
+
+    document.getElementById('btnAnn').addEventListener('click',(e)=>{
+      createSparkles(e.clientX, e.clientY);
+      document.getElementById('nickReply').textContent='Ann suena hermoso 💫';
+    });
+    document.getElementById('btnAni').addEventListener('click',(e)=>{
+      createSparkles(e.clientX, e.clientY);
+      document.getElementById('nickReply').textContent='Ani... me encanta ✨';
+    });
+
+  </script>
+</body>
+</html>
