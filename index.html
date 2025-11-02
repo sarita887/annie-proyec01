@@ -16,7 +16,13 @@
       --white: #f8fafc;
     }
     *{box-sizing:border-box;}
-    html,body{height:100%;margin:0;padding:0;font-family:'Poppins',sans-serif;background:var(--bg);color:var(--white);overflow:hidden;}
+    html,body{
+      height:100%;margin:0;padding:0;
+      font-family:'Poppins',sans-serif;
+      background:var(--bg);color:var(--white);
+      display:flex;align-items:center;justify-content:center;
+      overflow:hidden;
+    }
 
     /* 🌟 Fondo estrellado animado */
     .stars{
@@ -27,27 +33,14 @@
       z-index:0;
     }
     .stars::after{
-      content:'';
-      position:absolute;top:0;left:0;width:100%;height:100%;
+      content:'';position:absolute;top:0;left:0;width:100%;height:100%;
       background:url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
-      animation: twinkle 3s infinite;
-      opacity:0.8;
+      animation: twinkle 3s infinite;opacity:0.8;
     }
-    @keyframes twinkle {
-      0%,100%{opacity:0.8;}
-      50%{opacity:1;}
-    }
-
-    body{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:10px;
-      position:relative;
-    }
+    @keyframes twinkle {0%,100%{opacity:0.8;}50%{opacity:1;}}
 
     .card{
-      width:100%;
+      width:90%;
       max-width:400px;
       background:var(--card);
       border-radius:20px;
@@ -71,13 +64,7 @@
 
     .controls{display:flex;justify-content:space-between;margin-top:16px;}
     button{
-      flex:1;
-      margin:0 4px;
-      padding:10px;
-      border:none;
-      border-radius:10px;
-      font-weight:600;
-      cursor:pointer;
+      flex:1;margin:0 4px;padding:10px;border:none;border-radius:10px;font-weight:600;cursor:pointer;
     }
     .btn{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#081022;}
     .ghost{background:transparent;border:1px solid rgba(255,255,255,0.2);color:var(--white);}
@@ -94,31 +81,22 @@
 
     /* ✨ Chispitas */
     .sparkle{
-      position:fixed;
-      width:8px;
-      height:8px;
+      position:fixed;width:8px;height:8px;
       background: radial-gradient(circle, white, transparent);
-      border-radius:50%;
-      pointer-events:none;
-      animation:sparkle 1s ease-out forwards;
-      z-index:10;
+      border-radius:50%;pointer-events:none;
+      animation:sparkle 1s ease-out forwards;z-index:10;
     }
     @keyframes sparkle{
       0%{opacity:1;transform:scale(1);}
       100%{opacity:0;transform:scale(2);}
     }
 
-    /* 🔊 Botón de música */
+    /* 🔊 Botón música */
     #music-control{
-      position:absolute;
-      top:10px;right:10px;
-      background:rgba(255,255,255,0.1);
-      border:none;
-      color:white;
-      border-radius:50%;
-      width:40px;height:40px;
-      font-size:20px;
-      cursor:pointer;
+      position:absolute;top:10px;right:10px;
+      background:rgba(255,255,255,0.1);border:none;
+      color:white;border-radius:50%;width:40px;height:40px;
+      font-size:20px;cursor:pointer;
       box-shadow:0 0 10px rgba(255,255,255,0.3);
       z-index:2;
     }
@@ -134,7 +112,7 @@
   <div class="stars"></div>
 
   <main class="card">
-    <button id="music-control">🔊</button>
+    <button id="music-control">🎵</button>
     <h1>Mini prueba para Annie 🌟</h1>
     <p>Tres preguntitas rápidas para conocerte mejor 💕</p>
 
@@ -175,64 +153,39 @@
     </div>
 
     <div id="final" class="final-card">
-      <h2>la verdad no sabia como decirtelo PERO... 💭</h2>
-      <p>¿Puedo llamarte <strong>Ann</strong> o <strong>Ani</strong>?</p>
+      <h2>La verdad no sabía cómo decírtelo... 💭</h2>
+      <p>¿Puedo llamarte con un apodo bonito? 🥺</p>
       <div class="nick-btns">
-        <button class="nick-yes" id="btnAnn">Ann</button>
-        <button class="nick-ani" id="btnAni">Ani</button>
+        <button class="nick-yes" id="btnSi">Sí 💕</button>
+        <button class="nick-ani" id="btnNo">No 😅</button>
+      </div>
+      <div id="chooseNick" style="display:none;">
+        <p>Entonces... ¿te puedo decir <strong>Ann</strong> o <strong>Ani</strong>? 💫</p>
+        <div class="nick-btns">
+          <button class="nick-yes" id="btnAnn">Ann</button>
+          <button class="nick-ani" id="btnAni">Ani</button>
+        </div>
       </div>
       <p id="nickReply"></p>
     </div>
   </main>
 
-<!-- 🎵 Música de fondo automática desde YouTube -->
-<div id="music-container">
-  <iframe
-    id="yt-music"
-    width="0"
-    height="0"
-    src="https://www.youtube.com/embed/Lf566pMNCOw?enablejsapi=1&loop=1&playlist=Lf566pMNCOw&autoplay=1&mute=1"
-    frameborder="0"
-    allow="autoplay">
-  </iframe>
-  <button id="music-toggle">🔇 Apagar música</button>
-</div>
-
-<!-- API de YouTube -->
-<script src="https://www.youtube.com/iframe_api"></script>
-
-<script>
-  let player;
-  let musicPlaying = true;
-  const musicButton = document.getElementById("music-toggle");
-
-  function onYouTubeIframeAPIReady() {
-    player = new YT.Player("yt-music", {
-      events: {
-        onReady: (event) => {
-          event.target.setVolume(20); // volumen bajo
-          event.target.unMute(); // activa el sonido
-          event.target.playVideo(); // inicia automáticamente
-        },
-      },
-    });
-  }
-
-  musicButton.addEventListener("click", () => {
-    if (!player) return;
-    if (musicPlaying) {
-      player.pauseVideo();
-      musicButton.textContent = "🔊 Activar música";
-    } else {
-      player.playVideo();
-      musicButton.textContent = "🔇 Apagar música";
-    }
-    musicPlaying = !musicPlaying;
-  });
-</script>
-
+  <!-- 🎵 Música con botón -->
+  <audio id="bg-music" loop>
+    <source src="https://cdn.pixabay.com/audio/2024/04/14/audio_7c2a11b5a3.mp3" type="audio/mp3">
+  </audio>
 
   <script>
+    const music=document.getElementById('bg-music');
+    const control=document.getElementById('music-control');
+    let playing=false;
+    control.addEventListener('click',()=>{
+      if(!playing){music.play();control.textContent='🔇';}
+      else{music.pause();control.textContent='🎵';}
+      playing=!playing;
+    });
+
+    // --- Quiz ---
     const sections=document.querySelectorAll('.question');
     const nextBtn=document.getElementById('nextBtn');
     const prevBtn=document.getElementById('prevBtn');
@@ -243,7 +196,7 @@
       sections.forEach((s,k)=>s.style.display=k===i?'block':'none');
       prevBtn.disabled=i===0;
       nextBtn.textContent=i===sections.length-1?'Terminar':'Siguiente →';
-      progressBar.style.width=(i/sections.length)*100+'%';
+      progressBar.style.width=((i)/sections.length)*100+'%';
     }
 
     document.querySelectorAll('.option').forEach(opt=>{
@@ -270,25 +223,42 @@
     // ✨ Chispitas
     function createSparkles(x, y) {
       for (let i = 0; i < 15; i++) {
-        const sparkle = document.createElement('div');
-        sparkle.classList.add('sparkle');
-        sparkle.style.left = `${x + Math.random() * 20 - 10}px`;
-        sparkle.style.top = `${y + Math.random() * 20 - 10}px`;
-        sparkle.style.background = `hsl(${Math.random() * 360}, 100%, 70%)`;
-        document.body.appendChild(sparkle);
-        setTimeout(() => sparkle.remove(), 1000);
+        const s = document.createElement('div');
+        s.classList.add('sparkle');
+        s.style.left = `${x + Math.random() * 20 - 10}px`;
+        s.style.top = `${y + Math.random() * 20 - 10}px`;
+        s.style.background = `hsl(${Math.random()*360},100%,70%)`;
+        document.body.appendChild(s);
+        setTimeout(() => s.remove(), 1000);
       }
     }
 
+    // --- Última parte ---
+    const btnSi=document.getElementById('btnSi');
+    const btnNo=document.getElementById('btnNo');
+    const chooseNick=document.getElementById('chooseNick');
+    const reply=document.getElementById('nickReply');
+
+    btnSi.addEventListener('click',()=>{
+      chooseNick.style.display='block';
+      reply.textContent='';
+      createSparkles(window.innerWidth/2, window.innerHeight/2);
+    });
+
+    btnNo.addEventListener('click',()=>{
+      chooseNick.style.display='none';
+      reply.textContent='Oh no... hay un error, te equivocaste de botón 😅';
+      createSparkles(window.innerWidth/2, window.innerHeight/2);
+    });
+
     document.getElementById('btnAnn').addEventListener('click',(e)=>{
       createSparkles(e.clientX, e.clientY);
-      document.getElementById('nickReply').textContent='Ann suena hermoso 💫';
+      reply.textContent='Ann suena hermoso 💫';
     });
     document.getElementById('btnAni').addEventListener('click',(e)=>{
       createSparkles(e.clientX, e.clientY);
-      document.getElementById('nickReply').textContent='Ani... me encanta ✨';
+      reply.textContent='Ani... me encanta ✨';
     });
-
   </script>
 </body>
 </html>
