@@ -89,6 +89,7 @@
       100%{opacity:0;transform:scale(2);}
     }
 
+    /* 🎵 Botón de sonido */
     #music-control{
       position:absolute;top:10px;right:10px;
       background:rgba(255,255,255,0.1);border:none;
@@ -96,6 +97,15 @@
       font-size:20px;cursor:pointer;
       box-shadow:0 0 10px rgba(255,255,255,0.3);
       z-index:2;
+      display:flex;align-items:center;justify-content:center;
+    }
+
+    /* 🎶 Contenedor oculto de YouTube */
+    #yt-container{
+      position: fixed;
+      width:0;
+      height:0;
+      overflow:hidden;
     }
 
     @media(max-width:480px){
@@ -109,11 +119,12 @@
   <div class="stars"></div>
 
   <main class="card">
-    <button id="music-control">🔇</button>
-    <!-- 🎵 Audio silenciado al inicio -->
-    <audio id="bg-music" autoplay loop muted>
-      <source src="WhatsApp Audio 2025-11-01 at 10.43.20 PM.mp4" type="audio/mp4">
-    </audio>
+    <button id="music-control">🎵</button>
+
+    <!-- 🎶 Reproductor oculto de YouTube -->
+    <div id="yt-container">
+      <iframe id="yt-player" width="0" height="0" frameborder="0" allow="autoplay"></iframe>
+    </div>
 
     <h1>Mini prueba para Annie 🌟</h1>
     <p>Tres preguntitas rápidas para conocerte mejor 💕</p>
@@ -173,27 +184,21 @@
   </main>
 
   <script>
-    const music = document.getElementById('bg-music');
-    const control = document.getElementById('music-control');
+    const musicBtn = document.getElementById('music-control');
+    const ytPlayer = document.getElementById('yt-player');
+    let youtubePlaying = false;
 
-    // 🎧 Activa la música cuando Annie toca por primera vez
-    document.body.addEventListener('click', () => {
-      if (music.paused) {
-        music.muted = false;
-        music.play();
-        control.textContent = '🔊';
-      }
-    }, { once: true });
+    const videoId = "S_9qN7vwMbM"; // 💖 mismo video del juego del corazón
 
-    // 🎵 Botón de encendido/apagado
-    control.addEventListener('click', () => {
-      if (music.paused) {
-        music.muted = false;
-        music.play();
-        control.textContent = '🔊';
+    musicBtn.addEventListener('click', () => {
+      if (!youtubePlaying) {
+        ytPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}`;
+        youtubePlaying = true;
+        musicBtn.textContent = '🔊';
       } else {
-        music.pause();
-        control.textContent = '🔇';
+        ytPlayer.src = '';
+        youtubePlaying = false;
+        musicBtn.textContent = '🔇';
       }
     });
 
