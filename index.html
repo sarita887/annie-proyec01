@@ -24,7 +24,6 @@
       overflow:hidden;
     }
 
-    /* 🌟 Fondo estrellado animado */
     .stars{
       position:fixed;
       top:0;left:0;width:100%;height:100%;
@@ -79,7 +78,6 @@
     .nick-ani{background:var(--accent-2);color:#081022;}
     #nickReply{margin-top:10px;color:var(--muted);font-size:14px;}
 
-    /* ✨ Chispitas */
     .sparkle{
       position:fixed;width:8px;height:8px;
       background: radial-gradient(circle, white, transparent);
@@ -91,7 +89,6 @@
       100%{opacity:0;transform:scale(2);}
     }
 
-    /* 🔊 Botón música */
     #music-control{
       position:absolute;top:10px;right:10px;
       background:rgba(255,255,255,0.1);border:none;
@@ -112,7 +109,12 @@
   <div class="stars"></div>
 
   <main class="card">
-    <button id="music-control">🎵</button>
+    <button id="music-control">🔇</button>
+    <!-- 🎵 Audio silenciado al inicio -->
+    <audio id="bg-music" autoplay loop muted>
+      <source src="WhatsApp Audio 2025-11-01 at 10.43.20 PM.mp4" type="audio/mp4">
+    </audio>
+
     <h1>Mini prueba para Annie 🌟</h1>
     <p>Tres preguntitas rápidas para conocerte mejor 💕</p>
 
@@ -170,27 +172,37 @@
     </div>
   </main>
 
-  <!-- 🎵 Música con botón -->
-  <audio id="bg-music" loop>
-    <source src="https://cdn.pixabay.com/audio/2024/04/14/audio_7c2a11b5a3.mp3" type="audio/mp3">
-  </audio>
-
   <script>
-    const music=document.getElementById('bg-music');
-    const control=document.getElementById('music-control');
-    let playing=false;
-    control.addEventListener('click',()=>{
-      if(!playing){music.play();control.textContent='🔇';}
-      else{music.pause();control.textContent='🎵';}
-      playing=!playing;
+    const music = document.getElementById('bg-music');
+    const control = document.getElementById('music-control');
+
+    // 🎧 Activa la música cuando Annie toca por primera vez
+    document.body.addEventListener('click', () => {
+      if (music.paused) {
+        music.muted = false;
+        music.play();
+        control.textContent = '🔊';
+      }
+    }, { once: true });
+
+    // 🎵 Botón de encendido/apagado
+    control.addEventListener('click', () => {
+      if (music.paused) {
+        music.muted = false;
+        music.play();
+        control.textContent = '🔊';
+      } else {
+        music.pause();
+        control.textContent = '🔇';
+      }
     });
 
     // --- Quiz ---
-    const sections=document.querySelectorAll('.question');
-    const nextBtn=document.getElementById('nextBtn');
-    const prevBtn=document.getElementById('prevBtn');
-    const progressBar=document.querySelector('.progress > i');
-    let idx=0;
+    const sections = document.querySelectorAll('.question');
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const progressBar = document.querySelector('.progress > i');
+    let idx = 0;
 
     function showIndex(i){
       sections.forEach((s,k)=>s.style.display=k===i?'block':'none');
@@ -233,7 +245,6 @@
       }
     }
 
-    // --- Última parte ---
     const btnSi=document.getElementById('btnSi');
     const btnNo=document.getElementById('btnNo');
     const chooseNick=document.getElementById('chooseNick');
